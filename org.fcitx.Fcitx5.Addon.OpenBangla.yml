@@ -1,0 +1,60 @@
+app-id: org.fcitx.Fcitx5.Addon.OpenBangla
+branch: master
+runtime: org.fcitx.Fcitx5
+runtime-version: stable
+sdk: org.kde.Sdk//5.15-24.08
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+build-extension: true
+separate-locales: false
+cleanup:
+  - /bin
+  - /include
+  - /lib/pkgconfig
+  - /share/pkgconfig
+  - '*.la'
+
+build-options:
+  prefix: /app/addons/OpenBangla
+  prepend-path: /app/addons/OpenBangla/bin
+  prepend-pkg-config-path: /app/addons/OpenBangla/lib/pkgconfig
+  append-path: /usr/lib/sdk/rust-stable/bin
+  build-args:
+   - --share=network
+
+modules:
+  # Add the Rust library module
+  - name: riti
+    buildsystem: simple
+    build-options:
+      prepend-ld-library-path: /app/addons/OpenBangla/lib
+      env:
+        CARGO_HOME: /run/build/riti/cargo
+    build-commands:
+      - cargo --offline --frozen fetch --manifest-path Cargo.toml
+      - cargo --offline --frozen build --release
+      - install -Dm755 target/release/libriti.a /app/addons/OpenBangla/lib/liblibriti.a
+      - install -Dm755 target/release/libriti.d /app/addons/OpenBangla/lib/liblibriti.d
+
+    sources:
+      - ./generated-sources.json # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
+      - type: dir
+        path: .
+      - type: git
+        url: https://github.com/OpenBangla/riti.git
+        commit: 0d11ba0136261f7a26e4d8879345d7b6e757edd5
+
+  # Add the main application module
+  - name: fcitx5-openbangla
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DENABLE_FCITX=ON
+    builddir: true
+    sources:
+      - type: git
+        url: https://github.com/OpenBangla/OpenBangla-Keyboard.git
+        tag: develop
+    build-commands:
+      - cmake .. -GNinja
+      - ninja install -v
