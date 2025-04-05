@@ -4,5 +4,5 @@
 build
 
 ```
-latpak run org.flatpak.Builder --user --force-clean --install-deps-from=flathub --repo=repo --install build-dir 'org.fcitx.Fcitx5.Addon.OpenBangla.yaml'
+flatpak run org.flatpak.Builder --user --force-clean --install-deps-from=flathub --repo=repo --install build-dir 'org.fcitx.Fcitx5.Addon.OpenBangla.yaml'
 ```
