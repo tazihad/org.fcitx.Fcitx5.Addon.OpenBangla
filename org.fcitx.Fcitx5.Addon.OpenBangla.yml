@@ -23,7 +23,6 @@ build-options:
    - --share=network
 
 modules:
-  # Add the Rust library module
   - name: riti
     buildsystem: simple
     build-options:
@@ -41,17 +40,32 @@ modules:
         url: https://github.com/OpenBangla/riti.git
         commit: 0d11ba0136261f7a26e4d8879345d7b6e757edd5
 
-  # Add the main application module
   - name: fcitx5-openbangla
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_FCITX=ON
+      - -DCMAKE_INSTALL_PREFIX=${FLATPAK_DEST}
+    build-commands:
+      - cmake .. -GNinja
+      - ninja install -v
+      - mkdir -p /app/addons/OpenBangla/bin
+      - mkdir -p /app/addons/OpenBangla/lib/fcitx5
+      - mkdir -p /app/addons/OpenBangla/share/fcitx5/inputmethod
+      - mkdir -p /app/addons/OpenBangla/share/fcitx5/addon
+      - mkdir -p /app/addons/OpenBangla/share/openbangla-keyboard/layouts
+      - mkdir -p /app/addons/OpenBangla/share/openbangla-keyboard/data
+      - mkdir -p /app/addons/OpenBangla/share/applications
+      - mkdir -p /app/addons/OpenBangla/share/metainfo
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//bin/* /app/addons/OpenBangla/bin/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//lib/fcitx5/* /app/addons/OpenBangla/lib/fcitx5/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/inputmethod/* /app/addons/OpenBangla/share/fcitx5/inputmethod/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/addon/* /app/addons/OpenBangla/share/fcitx5/addon/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/openbangla-keyboard /app/addons/OpenBangla/share/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/applications/* /app/addons/OpenBangla/share/applications/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/metainfo/* /app/addons/OpenBangla/share/metainfo/
     builddir: true
     sources:
       - type: git
         url: https://github.com/OpenBangla/OpenBangla-Keyboard.git
         tag: develop
-    build-commands:
-      - cmake .. -GNinja
-      - ninja install -v
