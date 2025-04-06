@@ -37,8 +37,6 @@ modules:
 
     sources:
       - ./generated-sources.json # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
-      - type: dir
-        path: .
       - type: git
         url: https://github.com/OpenBangla/riti.git
         commit: 0d11ba0136261f7a26e4d8879345d7b6e757edd5
