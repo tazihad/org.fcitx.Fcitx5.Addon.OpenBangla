@@ -31,8 +31,7 @@ modules:
       env:
         CARGO_HOME: /run/build/riti/cargo
     build-commands:
-      - cargo --offline --frozen fetch --manifest-path Cargo.toml
-      - cargo --offline --frozen build --release
+      - cargo build --release --offline
       - install -Dm755 target/release/libriti.a /app/addons/OpenBangla/lib/liblibriti.a
       - install -Dm755 target/release/libriti.d /app/addons/OpenBangla/lib/liblibriti.d
 
