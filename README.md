@@ -13,6 +13,6 @@ But addon doesn't show up on Fcitx5. My best guess is because [fcitx5 flatpak](h
 Original issue https://github.com/OpenBangla/OpenBangla-Keyboard/issues/390
 
 What's not working:
-1. settings page not working. Qt5 missing
+1. settings page not working. Qt5 missing  
 `ldd /app/addons/OpenBangla/bin/openbangla-gui`
 2. icons not showing up.
