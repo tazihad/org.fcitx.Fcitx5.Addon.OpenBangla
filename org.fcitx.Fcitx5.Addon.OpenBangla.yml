@@ -8,12 +8,10 @@ sdk-extensions:
 build-extension: true
 separate-locales: false
 cleanup:
-  - /bin
   - /include
   - /lib/pkgconfig
   - /share/pkgconfig
   - '*.la'
-
 build-options:
   prefix: /app/addons/OpenBangla
   prepend-path: /app/addons/OpenBangla/bin
@@ -49,21 +47,32 @@ modules:
     build-commands:
       - cmake .. -GNinja
       - ninja install -v
-      - mkdir -p /app/addons/OpenBangla/bin
-      - mkdir -p /app/addons/OpenBangla/lib/fcitx5
-      - mkdir -p /app/addons/OpenBangla/share/fcitx5/inputmethod
-      - mkdir -p /app/addons/OpenBangla/share/fcitx5/addon
-      - mkdir -p /app/addons/OpenBangla/share/openbangla-keyboard/layouts
-      - mkdir -p /app/addons/OpenBangla/share/openbangla-keyboard/data
-      - mkdir -p /app/addons/OpenBangla/share/applications
-      - mkdir -p /app/addons/OpenBangla/share/metainfo
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//bin/* /app/addons/OpenBangla/bin/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//lib/fcitx5/* /app/addons/OpenBangla/lib/fcitx5/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/inputmethod/* /app/addons/OpenBangla/share/fcitx5/inputmethod/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/addon/* /app/addons/OpenBangla/share/fcitx5/addon/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/openbangla-keyboard /app/addons/OpenBangla/share/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/applications/* /app/addons/OpenBangla/share/applications/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/metainfo/* /app/addons/OpenBangla/share/metainfo/
+      - mkdir -p ${FLATPAK_DEST}/bin
+      - mkdir -p /${FLATPAK_DEST}/lib/fcitx5
+      - mkdir -p ${FLATPAK_DEST}/share/fcitx5/inputmethod
+      - mkdir -p ${FLATPAK_DEST}/share/fcitx5/addon
+      - mkdir -p ${FLATPAK_DEST}/share/openbangla-keyboard/layouts
+      - mkdir -p ${FLATPAK_DEST}/share/openbangla-keyboard/data
+      - mkdir -p ${FLATPAK_DEST}/share/applications
+      - mkdir -p ${FLATPAK_DEST}/share/metainfo
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//bin/* ${FLATPAK_DEST}/bin/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//lib/fcitx5/* ${FLATPAK_DEST}/lib/fcitx5/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/inputmethod/* ${FLATPAK_DEST}/share/fcitx5/inputmethod/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/addon/* ${FLATPAK_DEST}/share/fcitx5/addon/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/openbangla-keyboard ${FLATPAK_DEST}/share/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/applications/* ${FLATPAK_DEST}/share/applications/
+      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/metainfo/* ${FLATPAK_DEST}/share/metainfo/
+      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps
+      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps
+      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps
+      - install -Dm644 ../data/16.png ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/fcitx-openbangla-keyboard.png
+      - install -Dm644 ../data/16.png ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
+      - install -Dm644 ../data/32.png ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/fcitx-openbangla-keyboard.png
+      - install -Dm644 ../data/32.png ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
+      - install -Dm644 ../data/48.png ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/fcitx-openbangla-keyboard.png
+      - install -Dm644 ../data/48.png ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
+      - sed -i 's/Icon=openbangla-keyboard/Icon=fcitx-openbangla-keyboard/' ${FLATPAK_DEST}/share/fcitx5/inputmethod/openbangla.conf
+      - sed -i 's/Icon=openbangla-keyboard/Icon=fcitx-openbangla-keyboard/' ${FLATPAK_DEST}/share/applications/openbangla-keyboard.desktop
     builddir: true
     sources:
       - type: git
