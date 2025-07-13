@@ -11,3 +11,8 @@ Build works.
 But addon doesn't show up on Fcitx5. My best guess is because [fcitx5 flatpak](https://github.com/fcitx/flatpak-fcitx5/blob/master/org.fcitx.Fcitx5.yaml) built using kde 6.*. But Since OpenBangladesh is still on qt5 it won't build on KDE6. 
 
 Original issue https://github.com/OpenBangla/OpenBangla-Keyboard/issues/390
+
+What's not working:
+1. settings page not working. Qt5 missing
+`ldd /app/addons/OpenBangla/bin/openbangla-gui`
+2. icons not showing up.
