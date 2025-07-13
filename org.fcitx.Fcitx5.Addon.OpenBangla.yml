@@ -1,5 +1,5 @@
 app-id: org.fcitx.Fcitx5.Addon.OpenBangla
-branch: master
+branch: stable
 runtime: org.fcitx.Fcitx5
 runtime-version: stable
 sdk: org.kde.Sdk//5.15-24.08
