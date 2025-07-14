@@ -33,19 +33,6 @@ modules:
       - type: git
         url: https://github.com/OpenBangla/riti.git
         commit: 0d11ba0136261f7a26e4d8879345d7b6e757edd5
-  - name: qt5
-    buildsystem: simple
-    build-commands:
-        - echo "**************************setting QT5 Libraries ****************************************"
-        - |
-            for lib in libQt5Core libQt5Widgets libQt5Network libQt5Gui; do
-                cp /usr/lib/x86_64-linux-gnu/${lib}* ${FLATPAK_DEST}/lib/ 2>/dev/null || true
-            done
-        - mkdir -p ${FLATPAK_DEST}/lib/
-        - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5XcbQpa.so.5* ${FLATPAK_DEST}/lib/
-        - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5* ${FLATPAK_DEST}/lib/
-        - mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
-        - cp -v /usr/lib/plugins/platforms/libq*.so ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
   - name: fcitx5-openbangla
     buildsystem: cmake-ninja
     config-opts:
@@ -55,37 +42,26 @@ modules:
     build-commands:
       - cmake .. -GNinja
       - ninja install -v
-      - mkdir -p ${FLATPAK_DEST}/bin
-      - mkdir -p /${FLATPAK_DEST}/lib/fcitx5
-      - mkdir -p ${FLATPAK_DEST}/share/fcitx5/inputmethod
-      - mkdir -p ${FLATPAK_DEST}/share/fcitx5/addon
-      - mkdir -p ${FLATPAK_DEST}/share/openbangla-keyboard/layouts
-      - mkdir -p ${FLATPAK_DEST}/share/openbangla-keyboard/data
-      - mkdir -p ${FLATPAK_DEST}/share/applications
-      - mkdir -p ${FLATPAK_DEST}/share/metainfo
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//bin/* ${FLATPAK_DEST}/bin/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//lib/fcitx5/* ${FLATPAK_DEST}/lib/fcitx5/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/inputmethod/* ${FLATPAK_DEST}/share/fcitx5/inputmethod/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/fcitx5/addon/* ${FLATPAK_DEST}/share/fcitx5/addon/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/openbangla-keyboard ${FLATPAK_DEST}/share/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/applications/* ${FLATPAK_DEST}/share/applications/
-      - cp -r /run/build/fcitx5-openbangla/_flatpak_build//share/metainfo/* ${FLATPAK_DEST}/share/metainfo/
-      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps
-      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps
-      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps
-      - install -Dm644 ../data/16.png ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/fcitx-openbangla-keyboard.png
-      - install -Dm644 ../data/16.png ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
-      - install -Dm644 ../data/32.png ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/fcitx-openbangla-keyboard.png
-      - install -Dm644 ../data/32.png ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
-      - install -Dm644 ../data/48.png ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/fcitx-openbangla-keyboard.png
-      - install -Dm644 ../data/48.png ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
-      - sed -i 's/Icon=openbangla-keyboard/Icon=fcitx-openbangla-keyboard/' ${FLATPAK_DEST}/share/fcitx5/inputmethod/openbangla.conf
-      - sed -i 's/Icon=openbangla-keyboard/Icon=fcitx-openbangla-keyboard/' ${FLATPAK_DEST}/share/applications/openbangla-keyboard.desktop
+      - cp -r bin ${FLATPAK_DEST}/
+      - cp -r lib ${FLATPAK_DEST}/
+      - cp -r share ${FLATPAK_DEST}/
     builddir: true
     sources:
       - type: git
         url: https://github.com/OpenBangla/OpenBangla-Keyboard.git
         tag: develop
+
+  - name: qt5
+    buildsystem: simple
+    build-commands:
+        - |
+            for lib in libQt5Core libQt5Widgets libQt5Network libQt5Gui; do
+                cp /usr/lib/x86_64-linux-gnu/${lib}* ${FLATPAK_DEST}/lib/ 2>/dev/null || true
+            done
+        - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5XcbQpa.so.5* ${FLATPAK_DEST}/lib/
+        - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5* ${FLATPAK_DEST}/lib/
+        - mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
+        - cp -v /usr/lib/plugins/platforms/libq*.so ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
 
   - name: openbangla-gui-wrapper
     buildsystem: simple
@@ -98,4 +74,3 @@ modules:
         exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
         EOF
       - chmod +x /app/addons/OpenBangla/bin/openbangla-gui
-
