@@ -87,3 +87,15 @@ modules:
         url: https://github.com/OpenBangla/OpenBangla-Keyboard.git
         tag: develop
 
+  - name: openbangla-gui-wrapper
+    buildsystem: simple
+    build-commands:
+      - mv /app/addons/OpenBangla/bin/openbangla-gui /app/addons/OpenBangla/bin/openbangla-gui-bin
+      - |
+        cat > /app/addons/OpenBangla/bin/openbangla-gui << 'EOF'
+        #!/bin/sh
+        export QT_QPA_PLATFORM_PLUGIN_PATH=/app/addons/OpenBangla/lib/qt5/plugins/platforms
+        exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
+        EOF
+      - chmod +x /app/addons/OpenBangla/bin/openbangla-gui
+
