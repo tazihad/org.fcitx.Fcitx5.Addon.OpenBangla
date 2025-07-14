@@ -7,13 +7,6 @@ sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
 build-extension: true
 separate-locales: false
-finish-args:
-  - --device=dri
-  - --socket=x11
-  - --socket=wayland
-  - --socket=session-bus
-  - --talk-name=org.freedesktop.DBus
-
 cleanup:
   - /include
   - /lib/pkgconfig
@@ -35,7 +28,6 @@ modules:
       - cargo build --release --offline
       - install -d /app/addons/OpenBangla/lib/
       - install -Dm755 target/release/libriti.* /app/addons/OpenBangla/lib/
-
     sources:
       - ./generated-sources.json # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
       - type: git
@@ -52,7 +44,8 @@ modules:
         - mkdir -p ${FLATPAK_DEST}/lib/
         - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5XcbQpa.so.5* ${FLATPAK_DEST}/lib/
         - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5* ${FLATPAK_DEST}/lib/
-
+        - mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
+        - cp -v /usr/lib/plugins/platforms/libq*.so ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
   - name: fcitx5-openbangla
     buildsystem: cmake-ninja
     config-opts:
@@ -88,13 +81,9 @@ modules:
       - install -Dm644 ../data/48.png ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/org.fcitx.Fcitx5.fcitx-openbangla-keyboard.png
       - sed -i 's/Icon=openbangla-keyboard/Icon=fcitx-openbangla-keyboard/' ${FLATPAK_DEST}/share/fcitx5/inputmethod/openbangla.conf
       - sed -i 's/Icon=openbangla-keyboard/Icon=fcitx-openbangla-keyboard/' ${FLATPAK_DEST}/share/applications/openbangla-keyboard.desktop
-      - mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
-      - cp -v /usr/lib/plugins/platforms/libq*.so ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
     builddir: true
     sources:
       - type: git
         url: https://github.com/OpenBangla/OpenBangla-Keyboard.git
         tag: develop
-
-
 
