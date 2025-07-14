@@ -4,7 +4,7 @@
 build
 
 ```
-flatpak run org.flatpak.Builder --user --force-clean --install-deps-from=flathub --repo=repo --install build-dir 'org.fcitx.Fcitx5.Addon.OpenBangla.yml'
+flatpak run org.flatpak.Builder --user --force-clean --install-deps-from=flathub --repo=repo --install build-dir org.fcitx.Fcitx5.Addon.OpenBangla.yml
 ```
 
 Build works.
@@ -12,7 +12,11 @@ But addon doesn't show up on Fcitx5. My best guess is because [fcitx5 flatpak](h
 
 Original issue https://github.com/OpenBangla/OpenBangla-Keyboard/issues/390
 
+Bring setting:
+```sh
+flatpak run --command="/app/addons/OpenBangla/bin/openbangla-gui" org.fcitx.Fcitx5
+```
+
 What's not working:
-1. settings page not working. Qt5 missing  
-`ldd /app/addons/OpenBangla/bin/openbangla-gui`
-2. icons not showing up.
+- icons not showing up.
+
