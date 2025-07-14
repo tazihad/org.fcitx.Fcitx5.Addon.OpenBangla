@@ -53,24 +53,28 @@ modules:
 
   - name: qt5
     buildsystem: simple
+    build-options:
+        append-path: /usr/lib/sdk/qt5/bin
     build-commands:
         - |
-            for lib in libQt5Core libQt5Widgets libQt5Network libQt5Gui; do
-                cp /usr/lib/x86_64-linux-gnu/${lib}* ${FLATPAK_DEST}/lib/ 2>/dev/null || true
+            for lib in /usr/lib/x86_64-linux-gnu/libQt5*; do
+                install -Dm644 "$lib" "${FLATPAK_DEST}/lib/$(basename "$lib")"
             done
-        - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5XcbQpa.so.5* ${FLATPAK_DEST}/lib/
-        - install -Dm644 /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5* ${FLATPAK_DEST}/lib/
-        - mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
-        - cp -v /usr/lib/plugins/platforms/libq*.so ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
-
+        - |
+            mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
+            for platform in /usr/lib/plugins/platforms/*; do
+                install -Dm644 "$platform" "${FLATPAK_DEST}/lib/qt5/plugins/platforms/$(basename "$platform")"
+            done
   - name: openbangla-gui-wrapper
     buildsystem: simple
     build-commands:
       - mv /app/addons/OpenBangla/bin/openbangla-gui /app/addons/OpenBangla/bin/openbangla-gui-bin
       - |
-        cat > /app/addons/OpenBangla/bin/openbangla-gui << 'EOF'
-        #!/bin/sh
-        export QT_QPA_PLATFORM_PLUGIN_PATH=/app/addons/OpenBangla/lib/qt5/plugins/platforms
-        exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
-        EOF
+            cat > /app/addons/OpenBangla/bin/openbangla-gui << 'EOF'
+            #!/bin/sh
+            export QT_QPA_PLATFORM_PLUGIN_PATH=/app/addons/OpenBangla/lib/qt5/plugins/platforms
+            exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
+            EOF
       - chmod +x /app/addons/OpenBangla/bin/openbangla-gui
+
+
