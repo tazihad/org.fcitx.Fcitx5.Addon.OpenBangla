@@ -14,12 +14,9 @@ cleanup:
   - '*.la'
 build-options:
   prefix: /app/addons/OpenBangla
-  prepend-path: /app/addons/OpenBangla/bin
-  prepend-pkg-config-path: /app/addons/OpenBangla/lib/pkgconfig
   append-path: /usr/lib/sdk/rust-stable/bin
   build-args:
    - --share=network
-
 modules:
   - name: riti
     buildsystem: simple
@@ -29,15 +26,13 @@ modules:
         CARGO_HOME: /run/build/riti/cargo
     build-commands:
       - cargo build --release --offline
-      - install -Dm755 target/release/libriti.a /app/addons/OpenBangla/lib/liblibriti.a
-      - install -Dm755 target/release/libriti.d /app/addons/OpenBangla/lib/liblibriti.d
-
+      - install -d /app/addons/OpenBangla/lib/
+      - install -Dm755 target/release/libriti.* /app/addons/OpenBangla/lib/
     sources:
       - ./generated-sources.json # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
       - type: git
         url: https://github.com/OpenBangla/riti.git
         commit: 0d11ba0136261f7a26e4d8879345d7b6e757edd5
-
   - name: fcitx5-openbangla
     buildsystem: cmake-ninja
     config-opts:
