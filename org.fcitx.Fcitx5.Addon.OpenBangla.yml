@@ -7,16 +7,17 @@ sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
 build-extension: true
 separate-locales: false
-cleanup:
-  - /include
-  - /lib/pkgconfig
-  - /share/pkgconfig
-  - '*.la'
 build-options:
   prefix: /app/addons/OpenBangla
   append-path: /usr/lib/sdk/rust-stable/bin
   build-args:
    - --share=network
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/pkgconfig
+  - '*.la'
+  - '*.a'
 modules:
   - name: riti
     buildsystem: simple
@@ -27,7 +28,7 @@ modules:
     build-commands:
       - cargo build --release --offline
       - install -d /app/addons/OpenBangla/lib/
-      - install -Dm755 target/release/libriti.* /app/addons/OpenBangla/lib/
+      - install -Dm755 target/release/*riti* /app/addons/OpenBangla/lib/
     sources:
       - ./generated-sources.json # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
       - type: git
@@ -41,10 +42,10 @@ modules:
       - -DCMAKE_INSTALL_PREFIX=${FLATPAK_DEST}
     build-commands:
       - cmake .. -GNinja
-      - ninja install -v
-      - cp -r bin ${FLATPAK_DEST}/
-      - cp -r lib ${FLATPAK_DEST}/
-      - cp -r share ${FLATPAK_DEST}/
+      - ninja install
+    post-install:
+      - cp -r bin lib share "${FLATPAK_DEST}/"
+      - sed -i '/^Icon=/d' ${FLATPAK_DEST}/share/fcitx5/inputmethod/openbangla.conf
     builddir: true
     sources:
       - type: git
