@@ -1,5 +1,8 @@
 # org.fcitx.Fcitx5.Addon.OpenBangla
 
+### Install
+- Download [fcitx-openbangla.flatpak](https://github.com/tazihad/org.fcitx.Fcitx5.Addon.OpenBangla/releases)
+- Install `flatpak install --user fcitx5-openbangla.flatpak`
 
 Build instruction:
 
