@@ -1,7 +1,7 @@
 # org.fcitx.Fcitx5.Addon.OpenBangla
 
 
-build
+Build instruction:
 
 ```
 flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -12,15 +12,18 @@ flatpak run org.flatpak.Builder --user --force-clean \
   --install build-dir \
   org.fcitx.Fcitx5.Addon.OpenBangla.yml
 ```
-Build works.
+Export single package for installation on other machine
+```sh
+flatpak build-bundle --runtime repo fcitx5-openbangla.flatpak org.fcitx.Fcitx5.Addon.OpenBangla stable
+```
 
 Original issue https://github.com/OpenBangla/OpenBangla-Keyboard/issues/390
 
-settings:
+run settings:
 ```sh
 flatpak run --command="/app/addons/OpenBangla/bin/openbangla-gui" org.fcitx.Fcitx5
 ```
 
-What's not working:
+### What's not working:
 - settings is black
 
