@@ -1,4 +1,4 @@
-# org.fcitx.Fcitx5.Addon.OpenBangla
+# OpenBangla Keyboard Extension for Fcitx5
 
 ### Install
 - Download [fcitx5-openbangla.flatpak](https://github.com/tazihad/org.fcitx.Fcitx5.Addon.OpenBangla/releases)
