@@ -31,7 +31,8 @@ modules:
       - install -d /app/addons/OpenBangla/lib/
       - install -Dm755 target/release/*riti* /app/addons/OpenBangla/lib/
     sources:
-      - ./generated-sources.json # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
+      # generate cargo source: https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo#usage
+      - ./generated-sources.json 
       - type: git
         url: https://github.com/OpenBangla/riti.git
         commit: 0d11ba0136261f7a26e4d8879345d7b6e757edd5
@@ -57,20 +58,17 @@ modules:
 
   - name: qt5
     buildsystem: simple
-    build-options:
-        append-path: /usr/lib/sdk/qt5/bin
     build-commands:
-        - |
-            for lib in /usr/lib/x86_64-linux-gnu/libQt5*; do
-                install -Dm644 "$lib" "${FLATPAK_DEST}/lib/$(basename "$lib")"
-            done
-        - |
-            mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins/platforms/
-            for platform in /usr/lib/plugins/platforms/*; do
-                install -Dm644 "$platform" "${FLATPAK_DEST}/lib/qt5/plugins/platforms/$(basename "$platform")"
-            done
-        - cp -P /usr/lib/x86_64-linux-gnu/libicu*.so* ${FLATPAK_DEST}/lib/
-        - cp -P /usr/lib/x86_64-linux-gnu/libpcre2-16.so* ${FLATPAK_DEST}/lib/ || true
+      - mkdir -p ${FLATPAK_DEST}/lib/qt5/plugins
+      - mkdir -p ${FLATPAK_DEST}/lib/qt5/qml
+      - |
+        for lib in /usr/lib/x86_64-linux-gnu/libQt5*; do
+            install -Dm644 "$lib" "${FLATPAK_DEST}/lib/$(basename "$lib")"
+        done
+      - cp -r /usr/lib/plugins/* ${FLATPAK_DEST}/lib/qt5/plugins/
+      - cp -r /usr/lib/qml/* ${FLATPAK_DEST}/lib/qt5/qml/
+      - cp -P /usr/lib/x86_64-linux-gnu/libicu*.so* ${FLATPAK_DEST}/lib/
+      - cp -P /usr/lib/x86_64-linux-gnu/libpcre2-16.so* ${FLATPAK_DEST}/lib/ || true
 
   - name: openbangla-gui-wrapper
     buildsystem: simple
@@ -79,6 +77,9 @@ modules:
       - |
             cat > /app/addons/OpenBangla/bin/openbangla-gui << 'EOF'
             #!/bin/sh
+            export BASE_DIR=/app/addons/OpenBangla
+            export QT_PLUGIN_PATH=$BASE_DIR/lib/qt5/plugins
+            export QML2_IMPORT_PATH=$BASE_DIR/lib/qt5/qml
             export QT_QPA_PLATFORM_PLUGIN_PATH=/app/addons/OpenBangla/lib/qt5/plugins/platforms
             exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
             EOF
