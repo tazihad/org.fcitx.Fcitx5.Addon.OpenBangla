@@ -49,7 +49,6 @@ modules:
       - ninja install
     post-install:
       - sed -i '/^Icon=/d' /app/addons/OpenBangla/share/fcitx5/inputmethod/openbangla.conf
-      - appstream-compose --basename=org.fcitx.Fcitx5.Addon.OpenBangla --prefix=${FLATPAK_DEST} --origin=flatpak org.fcitx.Fcitx5.Addon.OpenBangla
     builddir: true
     sources:
       - type: git

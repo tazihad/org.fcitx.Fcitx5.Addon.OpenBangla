@@ -13,7 +13,7 @@ flatpak install --user fcitx5-openbangla.flatpak
 ```
 flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak install flathub org.flatpak.Builder
-flatpak run org.flatpak.Builder --user --force-clean \
+flatpak run org.flatpak.Builder --user --force-clean --disable-cache \
   --install-deps-from=flathub \
   --repo=repo \
   --install build-dir \
