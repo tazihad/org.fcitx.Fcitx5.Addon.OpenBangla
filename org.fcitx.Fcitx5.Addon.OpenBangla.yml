@@ -39,13 +39,15 @@ modules:
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_FCITX=ON
-      - -DCMAKE_INSTALL_PREFIX=${FLATPAK_DEST}
+      - -DCMAKE_INSTALL_PREFIX=/app/addons/OpenBangla
+      - -DCMAKE_INSTALL_DATADIR=/app/addons/OpenBangla/share
+      - -DCMAKE_INSTALL_RPATH=/app/addons/OpenBangla/lib
+      - -DCMAKE_BUILD_WITH_INSTALL_RPATH=TRUE
     build-commands:
       - cmake .. -GNinja
       - ninja install
     post-install:
-      - cp -r bin lib share "${FLATPAK_DEST}/"
-      - sed -i '/^Icon=/d' ${FLATPAK_DEST}/share/fcitx5/inputmethod/openbangla.conf
+      - sed -i '/^Icon=/d' /app/addons/OpenBangla/share/fcitx5/inputmethod/openbangla.conf
     builddir: true
     sources:
       - type: git
@@ -77,5 +79,4 @@ modules:
             exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
             EOF
       - chmod +x /app/addons/OpenBangla/bin/openbangla-gui
-
 
