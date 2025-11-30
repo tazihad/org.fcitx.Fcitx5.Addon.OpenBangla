@@ -2,7 +2,7 @@ app-id: org.fcitx.Fcitx5.Addon.OpenBangla
 branch: stable
 runtime: org.fcitx.Fcitx5
 runtime-version: stable
-sdk: org.kde.Sdk//5.15-24.08
+sdk: org.kde.Sdk//5.15-25.08
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
 build-extension: true
@@ -68,6 +68,9 @@ modules:
             for platform in /usr/lib/plugins/platforms/*; do
                 install -Dm644 "$platform" "${FLATPAK_DEST}/lib/qt5/plugins/platforms/$(basename "$platform")"
             done
+        - cp -P /usr/lib/x86_64-linux-gnu/libicu*.so* ${FLATPAK_DEST}/lib/
+        - cp -P /usr/lib/x86_64-linux-gnu/libpcre2-16.so* ${FLATPAK_DEST}/lib/ || true
+
   - name: openbangla-gui-wrapper
     buildsystem: simple
     build-commands:
@@ -79,4 +82,3 @@ modules:
             exec /app/addons/OpenBangla/bin/openbangla-gui-bin "$@"
             EOF
       - chmod +x /app/addons/OpenBangla/bin/openbangla-gui
-
