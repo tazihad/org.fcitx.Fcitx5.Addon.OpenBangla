@@ -16,6 +16,7 @@ cleanup:
   - /include
   - /lib/pkgconfig
   - /share/pkgconfig
+  - /lib/cmake
   - '*.la'
   - '*.a'
 modules:
