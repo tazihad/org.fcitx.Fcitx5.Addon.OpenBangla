@@ -32,5 +32,5 @@ flatpak run --command="/app/addons/OpenBangla/bin/openbangla-gui" org.fcitx.Fcit
 ```
 
 ### What's not working:
-- settings is black
+- System tray icon doesn't work. 
 
